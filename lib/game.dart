@@ -38,14 +38,14 @@ class GamePage extends StatefulWidget {
   final int max;
 
   // 竖屏时矩阵宽度
-  late final int widthP;
+  int widthP;
   // 竖屏时矩阵高度
-  late final int heightP;
+  int heightP;
 
   // 横屏时矩阵宽度
-  late final int widthL;
+  int widthL;
   // 横屏时矩阵高度
-  late final int heightL;
+  int heightL;
 
   // 竖屏时横向padding
   final double paddingPH;
