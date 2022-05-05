@@ -73,6 +73,10 @@ class _GamePageState extends State<GamePage> {
   ///
   List<int> _puzzle = [];
 
+  /// 得分
+  ///
+  int score = 0;
+
   /// 当前选中的格子
   ///
   int _current = -1;
@@ -85,10 +89,10 @@ class _GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
 
-    // _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-    //   setState(() {
-    //   });
-    // });
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+      });
+    });
 
 
     List<int> value = [];
@@ -108,8 +112,8 @@ class _GamePageState extends State<GamePage> {
 
 
   @override
-  void disppose() {
-    // _timer!.cancel();
+  void dispose() {
+    _timer!.cancel();
 
     super.dispose();
   }
@@ -149,14 +153,20 @@ class _GamePageState extends State<GamePage> {
                 onPressed: () {
                   setState(() {
                     if (_current >= 0) {
+                      if (_current == i) {
+                        _current = -1;
+                        return;
+                      }
+
                       if (_puzzle[i] + _puzzle[_current] == widget.target) {
                         FlutterBeep.beep();
+                        score = score + 200;
 
                         if (left == 2) {
                           showDialog(context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text("太棒啦！在...内解决了问题！"),
+                                  content: Text('太棒啦！\n在' + _timer!.tick.toString() + '秒内全部做完！\n总得分为：$score分！'),
                                   actions: [
                                     TextButton(child: Text(r'再来一局'),
                                         onPressed: () {
@@ -181,6 +191,7 @@ class _GamePageState extends State<GamePage> {
                       }
                       else {
                         FlutterBeep.beep(false);
+                        score = score - 100;
                         _current = -1;
                       }
                     }
@@ -223,9 +234,10 @@ class _GamePageState extends State<GamePage> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('共有...组谜题'),
-            Text('已完成...组'),
-            Text('用时...')
+            Text('共有' + (_puzzle.length / 2).toString() + '组谜题'),
+            Text('已完成' + ((_puzzle.length - left) / 2).toString() + '组'),
+            Text('当前得分$score', style: TextStyle(color: score >= 0 ? Colors.black : Colors.red),),
+            Text('用时' + _timer!.tick.toString() + '秒')
             ]
         ),
       ),
