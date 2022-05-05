@@ -209,12 +209,14 @@ class _GamePageState extends State<GamePage> {
         title: Text("Mia，请找到两个数字，他们加在一起等于" + widget.target.toString()),
       ),
       body:
-      Center(
-        child: Padding(
-            padding: EdgeInsets.only(left: isPMode ? widget.paddingPH : widget.paddingLH, right:  isPMode ? widget.paddingPH : widget.paddingLH, top: isPMode ? widget.paddingPV : widget.paddingLV, bottom: isPMode ? widget.paddingPV : widget.paddingLV),
-            child: GridView.count(crossAxisCount: isPMode ? widget.widthP : widget.widthL, children: cells)
+          Container(width: double.infinity, height: double.infinity, color: Colors.grey, child:
+            Center(
+              child: Padding(
+                  padding: EdgeInsets.only(left: isPMode ? widget.paddingPH : widget.paddingLH, right:  isPMode ? widget.paddingPH : widget.paddingLH, top: isPMode ? widget.paddingPV : widget.paddingLV, bottom: isPMode ? widget.paddingPV : widget.paddingLV),
+                  child: GridView.count(crossAxisCount: isPMode ? widget.widthP : widget.widthL, children: cells)
+              ),
+            ),
           ),
-        ),
       // ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
