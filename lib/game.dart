@@ -10,43 +10,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-
-/*
-Widget buildGamePage(BuildContext context) {
-  double width = MediaQuery.of(context).size.width;
-  double height = MediaQuery.of(context).size.height;
-
-  if (width == 1728 && height == 1080) {
-    //pad横屏
-  }
-  else if (width == 1080 && height == 1728) {
-    //pad竖屏
-  }
-  else {
-    //其他
-
-  }
+import 'package:flutter_beep/flutter_beep.dart';
 
 
-  return null;
-}
-
-
-class SPadGamePage extends GamePage {
-
-//  SPadGamePage({required this.target, this.max = 2147483647, this.size = 48, this.widthL = 12, this.widthP = 6, Key? key}) : super();
-
-}
-*/
 
 
 class GamePage extends StatefulWidget {
   GamePage({required this.target, this.max = 2147483647,
-    this.widthP = 4, this.heightP = 6, this.widthL = 8, this.heightL = 3,
-    this.paddingPH = 62.0, this.paddingPV = 32.0, this.paddingLH = 1.0, this.paddingLV = 55.0, this.innerPadding = 4.0,
+    this.widthP = 4, this.heightP = 6, this.widthL = 8, this.heightL = 3, supe = false,
+    this.paddingPH = 62.0, this.paddingPV = 32.0, this.paddingLH = 10.0, this.paddingLV = 55.0, this.innerPadding = 4.0,
     Key? key}) : super(key: key) {
     if (widthP * heightP != widthL * heightL) {
       throw "数据大小不匹配";
+    }
+
+    if (supe) {
+      widthP = widthP * 2;
+      heightP = heightP * 2;
+      widthL = widthL * 2;
+      heightL = heightL * 2;
     }
   }
 
@@ -56,14 +38,14 @@ class GamePage extends StatefulWidget {
   final int max;
 
   // 竖屏时矩阵宽度
-  final int widthP;
+  late final int widthP;
   // 竖屏时矩阵高度
-  final int heightP;
+  late final int heightP;
 
   // 横屏时矩阵宽度
-  final int widthL;
+  late final int widthL;
   // 横屏时矩阵高度
-  final int heightL;
+  late final int heightL;
 
   // 竖屏时横向padding
   final double paddingPH;
@@ -112,9 +94,11 @@ class _GamePageState extends State<GamePage> {
     List<int> value = [];
 
     while (value.length < widget.heightL * widget.widthL) {
-      int r = math.Random.secure().nextInt(math.min(widget.target - 1, widget.max)) + 1;
-      value.add(r);
-      value.add(widget.target - r);
+      int r = math.Random.secure().nextInt(widget.target - 1) + 1;
+      if (r <= widget.max && widget.target - r <= widget.max) {
+        value.add(r);
+        value.add(widget.target - r);
+      }
     }
 
     while (value.isNotEmpty) {
@@ -151,10 +135,10 @@ class _GamePageState extends State<GamePage> {
       }
 
       cells.add(
-        Padding(padding: EdgeInsets.all(5), child:
+        Padding(padding: EdgeInsets.all(widget.innerPadding), child:
           Container(
         width: double.infinity, height: double.infinity,
-        color: _current == i ? Colors.red : Colors.white,
+        color: _current == i ? Colors.lightBlueAccent : Colors.white,
           child: FittedBox(
             // 居中
             child: Center(
@@ -166,7 +150,7 @@ class _GamePageState extends State<GamePage> {
                   setState(() {
                     if (_current >= 0) {
                       if (_puzzle[i] + _puzzle[_current] == widget.target) {
-                        // todo good beep
+                        FlutterBeep.beep();
 
                         if (left == 2) {
                           showDialog(context: context,
@@ -196,7 +180,7 @@ class _GamePageState extends State<GamePage> {
                         }
                       }
                       else {
-                        //todo bad beep
+                        FlutterBeep.beep(false);
                         _current = -1;
                       }
                     }
@@ -237,68 +221,12 @@ class _GamePageState extends State<GamePage> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('nihisadfhffffffffffffffffffffffffffffffffffffffffffffffffsssssssssssssssssssss')
+            Text('共有...组谜题'),
+            Text('已完成...组'),
+            Text('用时...')
             ]
-          //   Flexible(flex: 1,
-          //     child: TextButton(
-          //       child: Text('width($_width)--'),
-          //       onPressed: () {
-          //         setState(() {
-          //           _width--;
-          //         });
-          //
-          //       },
-          //     ),
-          //   ),
-          //   Flexible(flex: 1,
-          //     child: TextButton(
-          //       child: Text('width($_width)++'),
-          //       onPressed: () {
-          //         setState(() {
-          //           _width++;
-          //         });
-          //       },
-          //     ),
-          //   ),
-          //   const Flexible(flex: 1, child: Text('                                                                                                                                    ')),
-          //   Flexible(flex: 1,
-          //     child: TextButton(
-          //       child: Text('height($_height)--'),
-          //       onPressed: () {
-          //         setState(() {
-          //           _height--;
-          //         });
-          //       },
-          //     ),
-          //   ),
-          //   Flexible(flex: 1,
-          //     child: TextButton(
-          //       child: Text('height($_height)++'),
-          //       onPressed: () {
-          //         setState(() {
-          //           _height++;
-          //         });
-          //       },
-          //     ),
-          //   ),
-          // ]
-          ,
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   child: Image(image: AssetImage('assets/check.png')),
-      //   onPressed: () async {
-      //     //TODO check
-      //     Navigator.of(context).pushReplacement(
-      //         MaterialPageRoute(builder: (context) =>
-      //             GamePage(puzzles: widget.puzzles.moveToNext()))
-      //     );
-      //     // print("game.undoCmd=$_undoCmd");
-      //     // print("game.redoCmd=$_redoCmd");
-      //   },
-      //   tooltip: 'check',
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
