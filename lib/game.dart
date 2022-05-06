@@ -89,7 +89,7 @@ class _GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
       });
     });
@@ -139,78 +139,93 @@ class _GamePageState extends State<GamePage> {
       }
 
       cells.add(
-        Padding(padding: EdgeInsets.all(widget.innerPadding), child:
-          Container(
-        width: double.infinity, height: double.infinity,
-        color: _current == i ? Colors.lightBlueAccent : Colors.white,
-          child: FittedBox(
-            // 居中
-            child: Center(
-              // 内容
-              child: _puzzle[i] < 0 ? null :
-                TextButton(
-                child: Text(_puzzle[i].toString(), style: TextStyle(fontSize: 9999,)),
-                onPressed: () {
-                  setState(() {
-                    if (_current >= 0) {
-                      if (_current == i) {
-                        _current = -1;
-                        return;
-                      }
+        Padding(
+          padding: EdgeInsets.all(widget.innerPadding),
+          child: _puzzle[i] < 0 ? null :
+          TextButton(
+            child:
+            Container(
+              width: double.infinity, height: double.infinity,
+              color: _current == i ? Colors.lightBlueAccent : Colors.white,
+              child:
+              Center(
+                child:
+                FittedBox(
+                  child:
+                  Text(
+                    _puzzle[i].toString(),
+                    style:
+                    const TextStyle(
+                      fontSize: 9999,
+                      color: Colors.black,
+                    )
+                  )
+                )
+              )
+            ),
+            onPressed: () {
+              setState(() {
+                if (_current >= 0) {
+                  if (_current == i) {
+                    _current = -1;
+                    return;
+                  }
 
-                      if (_puzzle[i] + _puzzle[_current] == widget.target) {
-                        FlutterBeep.beep();
-                        score = score + 200;
+                  if (_puzzle[i] + _puzzle[_current] == widget.target) {
+                    FlutterBeep.beep();
+                    score = score + 200;
 
-                        if (left == 2) {
-                          showDialog(context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text('太棒啦！\n在' + _timer!.tick.toString() + '秒内全部做完！\n总得分为：$score分！', textScaleFactor: 4.0),
-                                  actions: [
-                                    TextButton(child: Text(r'再来一局', textScaleFactor: 4.0),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                          Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(builder: (context) =>
-                                                  GamePage(target: widget.target, max: widget.max,
-                                                      widthL: widget.widthL, heightL: widget.heightL, widthP: widget.widthP, heightP: widget.heightP,
-                                                      paddingLH: widget.paddingLH, paddingLV: widget.paddingLV, paddingPH: widget.paddingPH, paddingPV: widget.paddingPV, innerPadding: widget.innerPadding,))
-                                          );
-                                        })
-                                  ],
-                                );
-                              }
+                    if (left == 2) {
+                      showDialog(context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text('太棒啦！\n在' + _timer!.tick.toString() + '秒内全部做完！\n总得分为：$score分！', textScaleFactor: 4.0),
+                            actions: [
+                              TextButton(
+                                child:
+                                const Text(r'再来一局', textScaleFactor: 4.0),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (context) =>
+                                      GamePage(target: widget.target, max: widget.max,
+                                               widthL: widget.widthL, heightL: widget.heightL, widthP: widget.widthP, heightP: widget.heightP,
+                                               paddingLH: widget.paddingLH, paddingLV: widget.paddingLV, paddingPH: widget.paddingPH, paddingPV: widget.paddingPV, innerPadding: widget.innerPadding,))
+                                  );
+                                }
+                              )
+                            ],
                           );
                         }
-                        else {
-                          _puzzle[_current] = -1;
-                          _puzzle[i] = -1;
-                          _current = -1;
-                        }
-                      }
-                      else {
-                        FlutterBeep.beep(false);
-                        score = score - 100;
-                        _current = -1;
-                      }
+                      );
                     }
                     else {
-                      _current = i;
+                      _puzzle[_current] = -1;
+                      _puzzle[i] = -1;
+                      _current = -1;
                     }
-                  });
-                },
-                onLongPress: () {
-                  setState(() {
+                  }
+                  else {
+                    FlutterBeep.beep(false);
+                    score = score - 100;
                     _current = -1;
-                  });
-                },
-              )
-              )
+                  }
+                }
+                else {
+                  _current = i;
+                }
+              });
+            },
+            onLongPress: () {
+              setState(() {
+                _current = -1;
+              });
+            },
           )
-          )
-      ));
+        )
+      );
     }
+
 
     bool isPMode = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
 
