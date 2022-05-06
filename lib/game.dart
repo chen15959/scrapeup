@@ -166,9 +166,9 @@ class _GamePageState extends State<GamePage> {
                           showDialog(context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text('太棒啦！\n在' + _timer!.tick.toString() + '秒内全部做完！\n总得分为：$score分！'),
+                                  content: Text('太棒啦！\n在' + _timer!.tick.toString() + '秒内全部做完！\n总得分为：$score分！', textScaleFactor: 4.0),
                                   actions: [
-                                    TextButton(child: Text(r'再来一局'),
+                                    TextButton(child: Text(r'再来一局', textScaleFactor: 4.0),
                                         onPressed: () {
                                           Navigator.pop(context);
                                           Navigator.of(context).pushReplacement(
@@ -234,10 +234,9 @@ class _GamePageState extends State<GamePage> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('共有' + (_puzzle.length / 2).toString() + '组谜题'),
-            Text('已完成' + ((_puzzle.length - left) / 2).toString() + '组'),
-            Text('当前得分$score', style: TextStyle(color: score >= 0 ? Colors.black : Colors.red),),
-            Text('用时' + _timer!.tick.toString() + '秒')
+            Text('共有' + (_puzzle.length / 2).toString() + '组谜题。已完成' + ((_puzzle.length - left) / 2).toString() + '组', textScaleFactor: 2.0),
+            Text('当前得分$score', style: TextStyle(color: score >= 0 ? Colors.black : Colors.red), textScaleFactor: 2.0),
+            Text('用时' + _timer!.tick.toString() + '秒', textScaleFactor: 2.0)
             ]
         ),
       ),
