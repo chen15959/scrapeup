@@ -143,6 +143,7 @@ class _GamePageState extends State<GamePage> {
           padding: EdgeInsets.all(widget.innerPadding),
           child: _puzzle[i] < 0 ? null :
           TextButton(
+            style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero),),
             child:
             Container(
               width: double.infinity, height: double.infinity,
