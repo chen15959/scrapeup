@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '凑合吧，Mia',
+      title: '凑数的Mia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -38,14 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mia的凑合"),
+        title: const Text("凑数的Mia"),
       ),
       body:
       Center(
           child: buildMenu(context)
       ),
       floatingActionButton: FloatingActionButton(
-        child: Text(_superMode ? '超' : '普',),
+        child: Text(_superMode ? '超' : '普'),
         onPressed: () {
           setState(() {
             _superMode = !_superMode;
