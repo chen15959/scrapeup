@@ -176,6 +176,7 @@ class _GamePageState extends State<GamePage> {
                     score = score + 200;
 
                     if (left == 2) {
+                      _timer!.cancel();
                       showDialog(context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
